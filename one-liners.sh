@@ -31,8 +31,8 @@ tail -n2000 /var/log/exim_mainlog|grep /home/USERNAME/
 # EMAILS sort emails by login no
 head -1 /var/log/exim_mainlog | awk '{print $1}' ; egrep -o 'dovecot_login[^ ]+|dovecot_plain[^ ]+' /var/log/exim_mainlog | cut -f2 -d":" | sort|uniq -c|sort -nk 1 ; tail -1 /var/log/exim_mainlog | awk '{print From $1}'2020-10-25
 
-
-
+# REJECTED EMAILS FOR A SINGLE E-ADDRESS
+exigrep user@domain.com /var/log/exim_rejectlog*
  
 ------------------------ ACCOUNTS ------------------------
  
