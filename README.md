@@ -18,16 +18,16 @@ echo -e "\\n~~~~JB accounts backup last job stats~~~\\n" && tail -1 $(find /usr/
 ## EMAILS sort emails by login no
 head -1 /var/log/exim_mainlog | awk '{print $1}' ; egrep -o 'dovecot_login[^ ]+|dovecot_plain[^ ]+' /var/log/exim_mainlog | cut -f2 -d":" | sort|uniq -c|sort -nk 1 ; tail -1 /var/log/exim_mainlog | awk '{print From $1}'2020-10-25
 
-# REJECTED EMAILS FOR A SINGLE E-ADDRESS
+## REJECTED EMAILS FOR A SINGLE E-ADDRESS
 exigrep user@domain.com /var/log/exim_rejectlog*
 
-# FAILED Logins on email address
+## FAILED Logins on email address
 grep DOMAIN.com /var/log/maillog | grep failed
 
-# ALL logins/msgs for an email address
+## ALL logins/msgs for an email address
 grep dovecot_login:user@domain.com /var/log/exim_mainlog
  
-# ACCOUNTS
+## ACCOUNTS
  
 
 ## WHO accessed to a certain acc
@@ -65,7 +65,20 @@ grep -lr --include=*.php "eval(base64_decode" .
 grep -lr --include=*.php "eval" .
 grep -lr --include=*.php "base64" .
 
+# SSL
+
+## Check AutoSSL status for user
+
+/usr/local/cpanel/bin/autossl_check --user=USERNAME
+
+## Clear AutoSSL Pending Queue
+
+cd /var/cpanel
+mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
+/usr/local/cpanel/bin/autossl_check_cpstore_queue
+
 # LOGS
 
 ## GREP IP ACCESS LOG status 503
 grep IP-GOES-HERE addon-domain.main-domain-name.extension-ssl_log | grep 503
+
