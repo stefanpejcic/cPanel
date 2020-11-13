@@ -1,9 +1,9 @@
 # BACKUPS
 
-## Check cPbackup for errors
+### Check cPbackup for errors
 tail -100 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1) | grep 'error\|warn'
 
-## Check when backup finished
+#### Check when backup finished
 tail -3 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1)
 
 ## Number of accounts that were backed up
