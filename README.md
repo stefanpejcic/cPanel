@@ -82,3 +82,6 @@ mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
 ### GREP IP ACCESS LOG status 503
 grep IP-GOES-HERE addon-domain.main-domain-name.extension-ssl_log | grep 503
 
+## GREP WHICH DOMAINS IS IP ACCESSING
+grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq
+
