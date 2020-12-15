@@ -19,11 +19,7 @@ echo "Total Accounts to backup: $(grep -Li "suspended" $(grep -l "^BACKUP=1" /va
 ###  When was the last Jetbackup and is it done
 echo -e "\\n~~~~JB accounts backup last job stats~~~\\n" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print "Job date:"$1"-"$2" "$3", status: "$7" "$8}' | tr '[' ' ' && echo "Start time:" && head -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 | awk '{print $0" AM"}' && echo "End time:" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 && echo ""
 
-
-
-
-
-
+***
 
 # EMAILS
 
@@ -43,7 +39,8 @@ grep dovecot_login:user@domain.com /var/log/exim_mainlog
 ### Regenerayte mailbox size
 /scripts/generate_maildirsize --confirm --allaccounts --verbose USERNAME
 
- 
+***
+
 # ACCOUNTS
  
  
@@ -76,7 +73,7 @@ grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
 ### GREP IP address in the error log
 grep IP-GOES-HERE /usr/local/apache/logs/error_log
 
-
+***
 
 # MALWARE FINDING
 
@@ -101,7 +98,7 @@ grep -lr --include=*.php "base64" .
 ### Maldet scanner
 maldet -a /path/to/directory
 
-
+***
 
 # SSL
 
@@ -114,6 +111,8 @@ maldet -a /path/to/directory
 cd /var/cpanel
 mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
 /usr/local/cpanel/bin/autossl_check_cpstore_queue
+
+***
 
 # LOGS
 
@@ -129,6 +128,7 @@ grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq
 ### GREP USERNAME IN ERROR LOG
 grep "USERNAME" /usr/local/cpanel/logs/error_log
 
+***
 
 # Configuration
 
