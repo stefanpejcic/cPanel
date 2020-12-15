@@ -1,3 +1,10 @@
+# BASIC
+
+### Which user owns the domain (addon/allias)
+/scripts/whoowns domain.com
+
+
+
 # BACKUPS
 
 ### Check cPbackup for errors
@@ -26,9 +33,27 @@ grep DOMAIN.com /var/log/maillog | grep failed
 
 ### ALL logins/msgs for an email address
 grep dovecot_login:user@domain.com /var/log/exim_mainlog
+
+### Regenerayte mailbox size
+/scripts/generate_maildirsize --confirm --allaccounts --verbose USERNAME
+
  
 # ACCOUNTS
  
+ 
+### Suspend an account 
+/scripts/suspendacct USERNAME
+
+
+### Unsuspend an account:
+/scripts/unsuspendacct USERNAME
+
+## List of suspended accounts
+ll /var/cpanel/suspended
+or
+cat /usr/local/apache/conf/includes/account_suspensions.conf
+
+
 
 ### WHO accessed to a certain acc
 grep USERNAME /usr/local/cpanel/logs/session_log | grep "NEW .*app=cpaneld" | awk "{print $6}" | sort -u | uniq
@@ -43,7 +68,9 @@ grep suspend_incoming /usr/local/cpanel/logs/access_log
 grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
 
 ### GREP IP address in the error log
-grep 24.135.86.19 /usr/local/apache/logs/error_log
+grep IP-GOES-HERE /usr/local/apache/logs/error_log
+
+
 
 # MALWARE FINDING
 
@@ -65,6 +92,11 @@ grep -lr --include=*.php "eval(base64_decode" .
 grep -lr --include=*.php "eval" .
 grep -lr --include=*.php "base64" .
 
+### Maldet scanner
+maldet -a /path/to/directory
+
+
+
 # SSL
 
 ### Check AutoSSL status for user
@@ -82,6 +114,17 @@ mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
 ### GREP IP ACCESS LOG status 503
 grep IP-GOES-HERE addon-domain.main-domain-name.extension-ssl_log | grep 503
 
-## GREP WHICH DOMAINS IS IP ACCESSING
+### WHICH USERNAME IP USED FOR MAILLOGIN
+grep IP-GOES-HERE /var/log/maillog
+
+### GREP WHICH DOMAINS IS IP ACCESSING
 grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq
 
+### GREP USERNAME IN ERROR LOG
+grep "USERNAME" /usr/local/cpanel/logs/error_log
+
+
+# Configuration
+
+### No of SMTP connections
+cat /etc/exim.conf |grep smtp_accept_max
