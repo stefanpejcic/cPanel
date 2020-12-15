@@ -57,31 +57,6 @@ cat /usr/local/apache/conf/includes/account_suspensions.conf
 
 ***
 
-# MALWARE FINDING
-
-### POST requests for cpanel acc
-grep POST /home/USERNAME/access-logs/* | awk '{print $7}' | sort | uniq -c | sort -n
-
-### WORDPRESS ATTACKS
-egrep -c '(wp-comments-post.php|wp-login.php|xmlrpc.php)' /usr/local/apache/domlogs/* |grep -v "_log" |sort -t: -nr -k 2 |head -5 |tee /tmp/delete_check |cut -d'/' -f6; for domlog in $(cut -d':' -f1 /tmp/delete_check); do echo; echo $domlog; echo; echo wp-login.php :: $(grep -c wp-login.php $domlog); echo; grep wp-login.php $domlog | cut -d' ' -f1|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo xmlrpc.php :: $(grep -c xmlrpc.php $domlog); echo; grep xmlrpc.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo wp-comments-post.php :: $(grep -c wp-comments-post.php $domlog); echo; grep wp-comments-post.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; done
-
-
-### CWD mail scripts among files
-tail -n2000 /var/log/exim_mainlog|grep /home/USERNAME/
-
-
-### SCAN files for malware
-
-grep -R "base64_" /home/USERNAME/
-grep -lr --include=*.php "eval(base64_decode" .
-grep -lr --include=*.php "eval" .
-grep -lr --include=*.php "base64" .
-
-### Maldet scanner
-maldet -a /path/to/directory
-
-***
-
 # SSL
 
 ### Check AutoSSL status for user
@@ -122,6 +97,52 @@ grep suspend_incoming /usr/local/cpanel/logs/access_log
 ### Where IP tried to login (cpanel, webdisk, webmail..)
 grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
 
+***
+
+# FIREWALL (cPHulk & CSF)
+
+### cPhulk check IP
+grep IP /usr/local/cpanel/logs/cphulkd.log
+
+### Whitelist an IP on cPHulk
+/scripts/cphulkdwhitelist x.x.x.x 
+
+### Blacklist an IP on cPHulk
+/scripts/cphulkdblacklist x.x.x.x
+
+### CSF check IP
+csf -g 8.8.8.8
+
+### Unblock an IP on CSF
+csf -dr 8.8.8.8
+
+### Restart CSF
+csf -r
+
+***
+
+# MALWARE FINDING
+
+### POST requests for cpanel acc
+grep POST /home/USERNAME/access-logs/* | awk '{print $7}' | sort | uniq -c | sort -n
+
+### WORDPRESS ATTACKS
+egrep -c '(wp-comments-post.php|wp-login.php|xmlrpc.php)' /usr/local/apache/domlogs/* |grep -v "_log" |sort -t: -nr -k 2 |head -5 |tee /tmp/delete_check |cut -d'/' -f6; for domlog in $(cut -d':' -f1 /tmp/delete_check); do echo; echo $domlog; echo; echo wp-login.php :: $(grep -c wp-login.php $domlog); echo; grep wp-login.php $domlog | cut -d' ' -f1|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo xmlrpc.php :: $(grep -c xmlrpc.php $domlog); echo; grep xmlrpc.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo wp-comments-post.php :: $(grep -c wp-comments-post.php $domlog); echo; grep wp-comments-post.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; done
+
+
+### CWD mail scripts among files
+tail -n2000 /var/log/exim_mainlog|grep /home/USERNAME/
+
+
+### SCAN files for malware
+
+grep -R "base64_" /home/USERNAME/
+grep -lr --include=*.php "eval(base64_decode" .
+grep -lr --include=*.php "eval" .
+grep -lr --include=*.php "base64" .
+
+### Maldet scanner
+maldet -a /path/to/directory
 
 ***
 
