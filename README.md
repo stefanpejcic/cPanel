@@ -36,7 +36,7 @@ grep DOMAIN.com /var/log/maillog | grep failed
 ### ALL logins/msgs for an email address
 grep dovecot_login:user@domain.com /var/log/exim_mainlog
 
-### Regenerayte mailbox size
+### Regenerate mailbox size for a user
 /scripts/generate_maildirsize --confirm --allaccounts --verbose USERNAME
 
 ***
@@ -47,7 +47,6 @@ grep dovecot_login:user@domain.com /var/log/exim_mainlog
 ### Suspend an account 
 /scripts/suspendacct USERNAME
 
-
 ### Unsuspend an account:
 /scripts/unsuspendacct USERNAME
 
@@ -55,23 +54,6 @@ grep dovecot_login:user@domain.com /var/log/exim_mainlog
 ll /var/cpanel/suspended
 or
 cat /usr/local/apache/conf/includes/account_suspensions.conf
-
-
-
-### WHO accessed to a certain acc
-grep USERNAME /usr/local/cpanel/logs/session_log | grep "NEW .*app=cpaneld" | awk "{print $6}" | sort -u | uniq
-
-### WHO accessed from an IP address
-grep IP-GOES-HERE /usr/local/cpanel/logs/session_log | grep cpanel-user
-
-### WHO suspended email acc
-grep suspend_incoming /usr/local/cpanel/logs/access_log
-
-### Where IP tried to login (cpanel, webdisk, webmail..)
-grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
-
-### GREP IP address in the error log
-grep IP-GOES-HERE /usr/local/apache/logs/error_log
 
 ***
 
@@ -125,8 +107,21 @@ grep IP-GOES-HERE /var/log/maillog
 ### GREP WHICH DOMAINS IS IP ACCESSING
 grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq
 
-### GREP USERNAME IN ERROR LOG
+### GREP username or IP address in the error log
 grep "USERNAME" /usr/local/cpanel/logs/error_log
+
+### WHO accessed to a certain acc
+grep USERNAME /usr/local/cpanel/logs/session_log | grep "NEW .*app=cpaneld" | awk "{print $6}" | sort -u | uniq
+
+### WHO accessed from an IP address
+grep IP-GOES-HERE /usr/local/cpanel/logs/session_log | grep cpanel-user
+
+### WHO suspended email acc
+grep suspend_incoming /usr/local/cpanel/logs/access_log
+
+### Where IP tried to login (cpanel, webdisk, webmail..)
+grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
+
 
 ***
 
