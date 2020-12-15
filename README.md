@@ -148,5 +148,8 @@ maldet -a /path/to/directory
 
 # Configuration
 
-### No of SMTP connections
+### Check no of SMTP connections
 cat /etc/exim.conf |grep smtp_accept_max
+
+### Check version of PHP extension
+php -i | grep libxml
