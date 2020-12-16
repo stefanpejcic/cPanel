@@ -97,12 +97,19 @@ grep suspend_incoming /usr/local/cpanel/logs/access_log
 ### Where IP tried to login (cpanel, webdisk, webmail..)
 grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
 
+### All cPanel account action
+/var/cpanel/accounting.log
+
+
 ***
 
 # FIREWALL (cPHulk & CSF)
 
 ### cPhulk check IP
 grep IP /usr/local/cpanel/logs/cphulkd.log
+
+### Check cphulkd or Brute Force Protection Error logs
+/usr/local/cpanel/logs/cphulkd_errors.log
 
 ### Whitelist an IP on cPHulk
 /scripts/cphulkdwhitelist x.x.x.x 
