@@ -130,6 +130,9 @@ csf -r
 
 # MALWARE FINDING
 
+### Search for "Hacked by" signature
+grep -ril "hacked by" ./*
+
 ### Find modified files&directories in last 5 days
 find . -mtime -5 -ls
 
