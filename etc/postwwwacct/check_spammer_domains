@@ -1,0 +1,82 @@
+#! /bin/sh
+#
+#   postwwwacct.dir fragment to check new accounts against SURBL
+#   and suspend (and lock agains unsuspension) the new account if listed
+#
+#   Brian at WhiteDogGreenFrog dot com June 2006
+#   Based on cpanel forum discussion at
+#	http://forums.cpanel.net/showthread.php?p=256667
+#
+
+NOTIFY=root
+RESELLER_UNTRUSTED=    # set this to NOT warn reseller
+
+log=/var/log/postwwwacct.spammer
+umask 027
+
+if [ "$NEWSTYLE" = "" ]
+then
+    domain=$1
+    user=$2
+else
+    domain=$cp_domain
+    user=$cp_user
+fi
+
+res=$(host $domain.sc.surbl.org)
+
+# sample output:
+#suroslin.info.sc.surbl.org has address 127.0.0.2
+# TXT record:
+#suroslin.info.sc.surbl.org text "Blocked, See: http://www.surbl.org/lists.html#sc"
+
+case "$res" in
+*"has address"*) ;;
+*)
+	echo ... primary domain not listed in SURBL, all good
+	exit 0
+	;;
+esac
+
+#
+#  We only get here if the domain was blocked, so let's go to town on it ...
+#
+
+
+surbl_reason=$(host -t TXT $domain.sc.surbl.org)
+
+# So the reseller can see what's happening ...  if we want them to!
+if [ "$RESELLER_UNTRUSTED" = "" ]
+then
+    echo
+    echo ============================================================
+    echo "WARNING!!   Domain blocked in SURBL: $surbl_reason"
+    echo Suspending $domain, see server admin to get it unlocked
+    echo ============================================================
+    echo
+    echo suspending possible spammer account:
+fi
+
+#
+#   Log the find and email $NOTIFY
+#
+(
+  echo
+  echo ==== `date` =====
+  echo domain $domain user $user
+  echo $RESELLER tried to register a domain currently in SURBL
+  echo SURBL reason: $surbl_reason
+  env | sed -e 's/^/	env: /'
+) | tee -a $log | mail -s "Spammer caught: $domain" $NOTIFY
+
+PATH=$PATH:/scripts
+export PATH
+
+#
+#   Lock the account, the 1 on the end prevents reseller unlock
+#
+suspendacct $user "SURBL spammer: $surbl_reason" 1
+
+exit 1
+
+# -o-
