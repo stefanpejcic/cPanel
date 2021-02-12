@@ -1,0 +1,36 @@
+#! /bin/sh
+#
+#    Display a little link at the end of the account creation
+#    to allow admin to immediately terminate the domain
+#
+#    Can be called from /etc/postwwwacct.dir or as /scripts/postwwwacct
+#
+#    Brian Coogan, Nov 2006
+#
+
+# @@INVISIBLE@@
+
+	# env: SERVER_PORT=2087
+	# env: HTTPS=on
+	# env: HOST=minnie.dogfrog4.net:2087
+
+domain=$1
+username=$2
+
+
+http=http
+[ "$HTTPS" != "" ] && http=https
+
+: ${HTTP_HOST:=`hostname`} # simulate cpanel if run from commandline
+url="${http}://${HOST}/scripts/killacct?domain=$username&user=$username"
+
+echo -n "<br><table border=2><tr><td>"
+echo -n "<b><a href=\"${url}\" target=\"_blank\">"
+echo -n "<font color=red>"
+echo -n "Click here to undo $domain creation now! (in the event of some problem)"
+echo -n "</font>"
+echo -n "</a></b>"
+echo -n "</td></tr></table>"
+echo
+
+exit 0
