@@ -1,0 +1,29 @@
+#! /bin/sh
+#
+#  Add (fulfil) Mailscanner if it's an eligible (non-hobbyist) plan
+#
+PATH=/usr/local/sbin:/usr/local/bin:$PATH
+export PATH
+
+
+#arg 2: account    (account name)
+#arg 16: resellername
+#arg 17: planname
+#arg 21: contact@email.com
+
+fatal() { echo " - error: $ME: $*"; exit 1; }
+
+case ${17} in
+*_50meg*)
+	# this plan isn't eligible
+	echo NOT enabling Mailscanner for basic plan ${17}
+	;;
+*)      
+	addmailscanner $2 &&
+	  echo " - enabled Antivirus/Antispam (MailScanner) for user $2"
+        ;;
+esac
+
+exit 0
+
+# -End-
