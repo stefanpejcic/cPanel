@@ -1,0 +1,32 @@
+#! /bin/sh
+
+user=$2
+contact=${21}
+createdby=${16}
+
+echo Job two! user $1 domain $1 created by $createdby
+echo contact email is $contact
+
+exit 0
+
+arg 1: testdomain.com (domain)
+arg 2: tst9011 (username)
+arg 3: fd:3:9
+arg 4: 50 (quota)
+arg 5: monsoon  (cpanel skin)
+arg 6: n
+arg 7: y
+arg 8: n
+arg 9: 1 (maxftp)
+arg 10: 4 (maxsql)
+arg 11: 2 (emails)
+arg 12: 3 (maxlists)
+arg 13: 5 (maxsubdomains)
+arg 14: 8000 (bandwidth)
+arg 15: n
+arg 16: root (creator)
+arg 17: whitedog_50meg-1gig-wdgf (package)
+arg 18: 6 (maxparked)
+arg 19: 7 (maxaddon)
+arg 20: default
+arg 21: whmcontactemail@example.com (contactemail)
