@@ -8,16 +8,16 @@
 # BACKUPS
 
 ### Check cPbackup for errors
-tail -100 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1) | grep 'error\|warn'
+```tail -100 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1) | grep 'error\|warn'```
 
 ### Check when backup finished
-tail -3 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1)
+```tail -3 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1)```
 
 ### Number of accounts that were backed up
-echo "Total Accounts to backup: $(grep -Li "suspended" $(grep -l "^BACKUP=1" /var/cpanel/users/*) | wc -l)" && echo "Backed up accounts: $(cd "$(grep "BACKUPDIR" /var/cpanel/backups/config | awk '{print $2}')"/"$(date -dlast-sunday +%Y-%m-%d)"/accounts && ls | wc -l)"
+```echo "Total Accounts to backup: $(grep -Li "suspended" $(grep -l "^BACKUP=1" /var/cpanel/users/*) | wc -l)" && echo "Backed up accounts: $(cd "$(grep "BACKUPDIR" /var/cpanel/backups/config | awk '{print $2}')"/"$(date -dlast-sunday +%Y-%m-%d)"/accounts && ls | wc -l)"```
 
 ###  When was the last Jetbackup and is it done
-echo -e "\\n~~~~JB accounts backup last job stats~~~\\n" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print "Job date:"$1"-"$2" "$3", status: "$7" "$8}' | tr '[' ' ' && echo "Start time:" && head -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 | awk '{print $0" AM"}' && echo "End time:" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 && echo ""
+```echo -e "\\n~~~~JB accounts backup last job stats~~~\\n" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print "Job date:"$1"-"$2" "$3", status: "$7" "$8}' | tr '[' ' ' && echo "Start time:" && head -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 | awk '{print $0" AM"}' && echo "End time:" && tail -1 $(find /usr/local/jetapps/var/log/jetbackup/backup/ -type f -size +2k | xargs ls -dt | head -n 1) | awk '{print $4}' | cut -d ':' -f 1,2 && echo ""```
 
 ***
 
@@ -25,19 +25,19 @@ echo -e "\\n~~~~JB accounts backup last job stats~~~\\n" && tail -1 $(find /usr/
 
 
 ### EMAILS sort emails by login no
-head -1 /var/log/exim_mainlog | awk '{print $1}' ; egrep -o 'dovecot_login[^ ]+|dovecot_plain[^ ]+' /var/log/exim_mainlog | cut -f2 -d":" | sort|uniq -c|sort -nk 1 ; tail -1 /var/log/exim_mainlog | awk '{print From $1}'2020-10-25
+```head -1 /var/log/exim_mainlog | awk '{print $1}' ; egrep -o 'dovecot_login[^ ]+|dovecot_plain[^ ]+' /var/log/exim_mainlog | cut -f2 -d":" | sort|uniq -c|sort -nk 1 ; tail -1 /var/log/exim_mainlog | awk '{print From $1}'2020-10-25```
 
 ### REJECTED EMAILS FOR A SINGLE E-ADDRESS
-exigrep user@domain.com /var/log/exim_rejectlog*
+```exigrep user@domain.com /var/log/exim_rejectlog*```
 
 ### FAILED Logins on email address
-grep DOMAIN.com /var/log/maillog | grep failed
+```grep DOMAIN.com /var/log/maillog | grep failed```
 
 ### ALL logins/msgs for an email address
-grep dovecot_login:user@domain.com /var/log/exim_mainlog
+```grep dovecot_login:user@domain.com /var/log/exim_mainlog```
 
 ### Regenerate mailbox size for a user
-/scripts/generate_maildirsize --confirm --allaccounts --verbose USERNAME
+```/scripts/generate_maildirsize --confirm --allaccounts --verbose USERNAME```
 
 ***
 
@@ -45,15 +45,15 @@ grep dovecot_login:user@domain.com /var/log/exim_mainlog
  
  
 ### Suspend an account 
-/scripts/suspendacct USERNAME
+```/scripts/suspendacct USERNAME```
 
 ### Unsuspend an account:
-/scripts/unsuspendacct USERNAME
+```/scripts/unsuspendacct USERNAME```
 
 ## List of suspended accounts
-ll /var/cpanel/suspended
+```ll /var/cpanel/suspended```
 or
-cat /usr/local/apache/conf/includes/account_suspensions.conf
+```cat /usr/local/apache/conf/includes/account_suspensions.conf```
 
 ***
 
@@ -61,44 +61,44 @@ cat /usr/local/apache/conf/includes/account_suspensions.conf
 
 ### Check AutoSSL status for user
 
-/usr/local/cpanel/bin/autossl_check --user=USERNAME
+```/usr/local/cpanel/bin/autossl_check --user=USERNAME```
 
 ### Clear AutoSSL Pending Queue
 
-cd /var/cpanel
+```cd /var/cpanel
 mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
-/usr/local/cpanel/bin/autossl_check_cpstore_queue
+/usr/local/cpanel/bin/autossl_check_cpstore_queue```
 
 ***
 
 # LOGS
 
 ### GREP IP ACCESS LOG status 503
-grep IP-GOES-HERE addon-domain.main-domain-name.extension-ssl_log | grep 503
+```grep IP-GOES-HERE addon-domain.main-domain-name.extension-ssl_log | grep 503```
 
 ### WHICH USERNAME IP USED FOR MAILLOGIN
-grep IP-GOES-HERE /var/log/maillog
+```grep IP-GOES-HERE /var/log/maillog```
 
 ### GREP WHICH DOMAINS IS IP ACCESSING
-grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq
+```grep -rle 'IP-GOES-HERE' /usr/local/apache/domlogs/. | uniq```
 
 ### GREP username or IP address in the error log
-grep "USERNAME" /usr/local/cpanel/logs/error_log
+```grep "USERNAME" /usr/local/cpanel/logs/error_log```
 
 ### WHO accessed to a certain acc
-grep USERNAME /usr/local/cpanel/logs/session_log | grep "NEW .*app=cpaneld" | awk "{print $6}" | sort -u | uniq
+```grep USERNAME /usr/local/cpanel/logs/session_log | grep "NEW .*app=cpaneld" | awk "{print $6}" | sort -u | uniq```
 
 ### WHO accessed from an IP address
-grep IP-GOES-HERE /usr/local/cpanel/logs/session_log | grep cpanel-user
+```grep IP-GOES-HERE /usr/local/cpanel/logs/session_log | grep cpanel-user```
 
 ### WHO suspended email acc
-grep suspend_incoming /usr/local/cpanel/logs/access_log
+```grep suspend_incoming /usr/local/cpanel/logs/access_log```
 
 ### Where IP tried to login (cpanel, webdisk, webmail..)
-grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
+```grep IP-GOES-HERE /usr/local/cpanel/logs/login_log```
 
 ### All cPanel account action
-/var/cpanel/accounting.log
+```/var/cpanel/accounting.log```
 
 
 ***
@@ -106,22 +106,22 @@ grep IP-GOES-HERE /usr/local/cpanel/logs/login_log
 # FIREWALL (cPHulk & CSF)
 
 ### cPhulk check IP
-grep IP /usr/local/cpanel/logs/cphulkd.log
+```grep IP /usr/local/cpanel/logs/cphulkd.log```
 
 ### Check cphulkd or Brute Force Protection Error logs
-/usr/local/cpanel/logs/cphulkd_errors.log
+```/usr/local/cpanel/logs/cphulkd_errors.log```
 
 ### Whitelist an IP on cPHulk
-/scripts/cphulkdwhitelist x.x.x.x 
+```/scripts/cphulkdwhitelist x.x.x.x ```
 
 ### Blacklist an IP on cPHulk
-/scripts/cphulkdblacklist x.x.x.x
+```/scripts/cphulkdblacklist x.x.x.x```
 
 ### CSF check IP
-csf -g 8.8.8.8
+```csf -g 8.8.8.8```
 
 ### Unblock an IP on CSF
-csf -dr 8.8.8.8
+```csf -dr 8.8.8.8```
 
 ### Restart CSF
 csf -r
