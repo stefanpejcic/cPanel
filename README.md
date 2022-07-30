@@ -65,9 +65,9 @@ or
 
 ### Clear AutoSSL Pending Queue
 
-```cd /var/cpanel
-mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
-/usr/local/cpanel/bin/autossl_check_cpstore_queue```
+```cd /var/cpanel```
+```mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old```
+```/usr/local/cpanel/bin/autossl_check_cpstore_queue```
 
 ***
 
@@ -124,58 +124,58 @@ mv autossl_queue_cpanel.sqlite autossl_queue_cpanel.sqlite.old
 ```csf -dr 8.8.8.8```
 
 ### Restart CSF
-csf -r
+```csf -r```
 
 ***
 
 # MALWARE FINDING
 
 ### Search for "Hacked by" signature
-grep -ril "hacked by" ./*
+```grep -ril "hacked by" ./*```
 
 ### Find modified files&directories in last 5 days
-find . -mtime -5 -ls
+```find . -mtime -5 -ls```
 
 ### Find all modified files in last 120 min
-find /home/USERNAME -type f -mmin +120
+```find /home/USERNAME -type f -mmin +120```
 
 ### Grep username in karantin files of CXS
-grep -r USERNAME /karantin/cxscgi/
+```grep -r USERNAME /karantin/cxscgi/```
 
 ### Find PHP files in a folder
-find . -print | grep -i .php
+```find . -print | grep -i .php```
 
 ### Find PHP files in all /wp-content/uploads folders
-find /home/USERNAME/*/wp-content/uploads -print | grep -i .php
+```find /home/USERNAME/*/wp-content/uploads -print | grep -i .php```
 
 ### POST requests for cpanel acc
-grep POST /home/USERNAME/access-logs/* | awk '{print $7}' | sort | uniq -c | sort -n
+```grep POST /home/USERNAME/access-logs/* | awk '{print $7}' | sort | uniq -c | sort -n```
 
 
 ### WORDPRESS ATTACKS
-egrep -c '(wp-comments-post.php|wp-login.php|xmlrpc.php)' /usr/local/apache/domlogs/* |grep -v "_log" |sort -t: -nr -k 2 |head -5 |tee /tmp/delete_check |cut -d'/' -f6; for domlog in $(cut -d':' -f1 /tmp/delete_check); do echo; echo $domlog; echo; echo wp-login.php :: $(grep -c wp-login.php $domlog); echo; grep wp-login.php $domlog | cut -d' ' -f1|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo xmlrpc.php :: $(grep -c xmlrpc.php $domlog); echo; grep xmlrpc.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo wp-comments-post.php :: $(grep -c wp-comments-post.php $domlog); echo; grep wp-comments-post.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; done
+```egrep -c '(wp-comments-post.php|wp-login.php|xmlrpc.php)' /usr/local/apache/domlogs/* |grep -v "_log" |sort -t: -nr -k 2 |head -5 |tee /tmp/delete_check |cut -d'/' -f6; for domlog in $(cut -d':' -f1 /tmp/delete_check); do echo; echo $domlog; echo; echo wp-login.php :: $(grep -c wp-login.php $domlog); echo; grep wp-login.php $domlog | cut -d' ' -f1|egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo xmlrpc.php :: $(grep -c xmlrpc.php $domlog); echo; grep xmlrpc.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; echo wp-comments-post.php :: $(grep -c wp-comments-post.php $domlog); echo; grep wp-comments-post.php $domlog |cut -d' ' -f1 |egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' |sort |uniq -c |sort -nr | head; echo; done```
 
 
 ### CWD mail scripts among files
-tail -n2000 /var/log/exim_mainlog|grep /home/USERNAME/
+```tail -n2000 /var/log/exim_mainlog|grep /home/USERNAME/```
 
 
 ### SCAN files for malware
 
-grep -R "base64_" /home/USERNAME/
-grep -lr --include=*.php "eval(base64_decode" .
-grep -lr --include=*.php "eval" .
-grep -lr --include=*.php "base64" .
+```grep -R "base64_" /home/USERNAME/```
+```grep -lr --include=*.php "eval(base64_decode" .```
+```grep -lr --include=*.php "eval" .```
+```grep -lr --include=*.php "base64" .```
 
 ### Maldet scanner
-maldet -a /path/to/directory
+```maldet -a /path/to/directory```
 
 ***
 
 # Configuration
 
 ### Check no of SMTP connections
-cat /etc/exim.conf |grep smtp_accept_max
+```cat /etc/exim.conf |grep smtp_accept_max```
 
 ### Check version of PHP extension
-php -i | grep libxml
+```php -i | grep libxml```
