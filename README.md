@@ -7,6 +7,9 @@
 
 # BACKUPS
 
+### Generate backup for user
+```/usr/local/cpanel/bin/cpuwatch 20 --report-fd 3 /usr/local/cpanel/bin/pkgacct USERNAME_HERE /home/3487716.BIN_ADMIN_CPANEL_BACKUP_PL__.552c03d2.tmp userbackup --skipintegrationlinks```
+
 ### Check cPbackup for errors
 ```tail -100 $(ls -dt /usr/local/cpanel/logs/cpbackup/* | head -n1) | grep 'error\|warn'```
 
